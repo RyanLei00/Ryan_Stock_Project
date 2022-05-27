@@ -25,6 +25,5 @@ public class StockSimulationRunner {
                 option = s.nextLine();
             }
         }
-
     }
 }

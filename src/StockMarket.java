@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.time.format.DateTimeFormatter;
 
+import static java.lang.Integer.parseInt;
+
 //https://polygon.io/
 
 public class StockMarket {
@@ -47,13 +49,43 @@ public class StockMarket {
         stockName = stockName.toUpperCase();
         System.out.print("How long do you want to run the simulation (ie. day, month, year): ");
         String timeSpan = s.nextLine();
+        while(!timeSpan.equals("day") && !timeSpan.equals("month") && !timeSpan.equals("year")) {
+            System.out.print("Time span inputted incorrectly. Please input a valid run time (ie. day, month, year): ");
+            timeSpan = s.nextLine();
+        }
         System.out.print("When do you want to start the simulation (ie. 2021-07-22): ");
         String start = s.nextLine();
+        while(dateChecker(start)){
+            System.out.print("Date inputted incorrectly. Please input a valid start date (ie. 2021-07-22): ");
+            start = s.nextLine();
+        }
         System.out.print("When do you want to end the simulation (ie. 2021-07-22): ");
         String end = s.nextLine();
+        while(dateChecker(end)){
+            System.out.print("Date inputted incorrectly. Please input a valid end date (ie. 2021-07-22): ");
+            end = s.nextLine();
+        }
 
         String urlStock = "https://api.polygon.io/v2/aggs/ticker/" + stockName + "/range/1/"+ timeSpan + "/" + start + "/" + end + "?apiKey=" + apiKey;
         makeAPICall(urlStock);
+    }
+
+    public boolean dateChecker(String date){
+        if(date.indexOf("-") != 4 && date.indexOf("-", 5) != 7){
+            if(date.length() == 10){
+                String year = date.substring(0, 4);
+                if(parseInt(year) > 2022){
+                    String month = date.substring(5, 7);
+                    if(parseInt(month) > 12){
+                        String day = date.substring(8);
+                        if(parseInt(day) > 31){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     public void adviceStock(){
@@ -65,7 +97,6 @@ public class StockMarket {
         LocalDate today = LocalDate.now();
         LocalDate yesterday = today.minusDays(1);
         System.out.println("Yesterday's date: " + dtf.format(yesterday));
-
         String urlStock = "https://api.polygon.io/v2/aggs/ticker/" + stockName + "/range/1/day/" + yesterday + "/" + yesterday + "?apiKey=" + apiKey;
         makeAPICall(urlStock);
 
@@ -90,9 +121,9 @@ public class StockMarket {
     public void makeAPICall(String url)
     {
         try {
-            URI myUri = URI.create(url);
+            URI myUrl = URI.create(url);
             HttpRequest.Builder builder = HttpRequest.newBuilder();
-            builder.uri(myUri);
+            builder.uri(myUrl);
             HttpRequest request = builder.build();
 
             HttpClient client = HttpClient.newHttpClient();
