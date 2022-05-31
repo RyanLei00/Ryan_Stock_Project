@@ -74,11 +74,11 @@ public class StockMarket {
         if(date.indexOf("-") == 4 && date.indexOf("-", 5) == 7){
             if(date.length() == 10){
                 String year = date.substring(0, 4);
-                if(parseInt(year) < 2022){
+                if(parseInt(year) <= 2022){
                     String month = date.substring(5, 7);
-                    if(parseInt(month) < 12){
+                    if(parseInt(month) <= 12){
                         String day = date.substring(8);
-                        if(parseInt(day) < 31){
+                        if(parseInt(day) <= 31){
                             return true;
                         }
                     }
