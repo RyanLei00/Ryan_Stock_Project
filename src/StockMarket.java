@@ -55,13 +55,13 @@ public class StockMarket {
         }
         System.out.print("When do you want to start the simulation (ie. 2021-07-22): ");
         String start = s.nextLine();
-        while(dateChecker(start)){
+        while(!dateChecker(start)){
             System.out.print("Date inputted incorrectly. Please input a valid start date (ie. 2021-07-22): ");
             start = s.nextLine();
         }
         System.out.print("When do you want to end the simulation (ie. 2021-07-22): ");
         String end = s.nextLine();
-        while(dateChecker(end)){
+        while(!dateChecker(end)){
             System.out.print("Date inputted incorrectly. Please input a valid end date (ie. 2021-07-22): ");
             end = s.nextLine();
         }
@@ -71,14 +71,14 @@ public class StockMarket {
     }
 
     public boolean dateChecker(String date){
-        if(date.indexOf("-") != 4 && date.indexOf("-", 5) != 7){
+        if(date.indexOf("-") == 4 && date.indexOf("-", 5) == 7){
             if(date.length() == 10){
                 String year = date.substring(0, 4);
-                if(parseInt(year) > 2022){
+                if(parseInt(year) < 2022){
                     String month = date.substring(5, 7);
-                    if(parseInt(month) > 12){
+                    if(parseInt(month) < 12){
                         String day = date.substring(8);
-                        if(parseInt(day) > 31){
+                        if(parseInt(day) < 31){
                             return true;
                         }
                     }
